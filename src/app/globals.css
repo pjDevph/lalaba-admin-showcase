@@ -1,0 +1,351 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── Functional status palette ───────────────────────────────────────────
+     Deliberately NOT part of the themeable token set below: these encode
+     meaning, not brand. `--primary` is swapped by the theme picker, so a
+     badge painted with it says "approved" in green on one admin's screen and
+     violet on another's. Status colour must mean the same thing on every
+     screen in the panel, so it is pinned here and never overridden by a
+     [data-theme] block.
+
+     pending  = amber  — waiting on someone, no decision yet
+     success  = green  — approved / completed / settled
+     danger   = red    — rejected / failed / disputed / suspended
+     info     = blue   — in progress, actively moving
+     neutral  = gray   — archived / inactive / superseded / not applicable
+
+     Never reuse these five for decoration. */
+  --status-pending: oklch(0.45 0.11 75);
+  --status-pending-bg: oklch(0.96 0.05 85);
+  --status-success: oklch(0.44 0.11 150);
+  --status-success-bg: oklch(0.95 0.05 150);
+  --status-danger: oklch(0.51 0.19 27);
+  --status-danger-bg: oklch(0.95 0.04 25);
+  --status-info: oklch(0.48 0.13 250);
+  --status-info-bg: oklch(0.95 0.03 250);
+  --status-neutral: oklch(0.45 0 0);
+  --status-neutral-bg: oklch(0.95 0 0);
+}
+
+/* Color palettes — set via `data-theme` on <html> (see ColorThemeProvider).
+   Each only overrides the accent-bearing tokens, leaving background/card/
+   border/etc. as the neutral grayscale above, so a palette reads as a
+   tasteful accent shift rather than a full redesign. "Default" needs no
+   block here — it's simply the absence of a `data-theme` attribute. */
+/* ── LALABA BRAND ─────────────────────────────────────────────────────────
+   The panel's default palette, taken from the apps' own token file
+   (LALABA_CUSTOMER_APP_DEV/src/theme/tokens.ts) rather than approximated, so
+   the back office reads as the same product as the thing it administers.
+
+   The brand blue is #00AEEF (brand500). It is NOT used as a button fill on
+   light surfaces: white text on it measures 2.53:1, which fails AA, and the
+   apps hit the same wall — their tokens carry a comment saying so and a
+   darker step, #0066A0 (brand700), "for anything that has to be *read*".
+   This uses the same two-step rule:
+
+     surfaces you READ against  ->  #0066A0  (6.16:1 with white)
+     the identity accent        ->  #00AEEF  (tints, rings, dark mode)
+
+   Picking the bright blue for buttons would look more "on brand" for about a
+   day, until someone had to read a disabled label on one. */
+[data-theme="lalaba"] {
+  /* brand700 — the readable step. White on this is 6.16:1. */
+  --primary: oklch(0.492 0.121 244.0);
+  --primary-foreground: oklch(0.985 0 0);
+  /* brand600 — 3.89:1 on white, clearing the 3:1 that WCAG 1.4.11 asks of a
+     focus indicator, which brand500 at 2.53:1 does not. */
+  --ring: oklch(0.600 0.141 241.6);
+
+  /* Hover and selected states carry the brand as a tint, so the accent reads
+     as Lalaba without shouting. primaryTint under brand700 is well past AA. */
+  --accent: oklch(0.966 0.020 224.3);
+  --accent-foreground: oklch(0.492 0.121 244.0);
+
+  /* The screen is the apps' own off-white, not pure white — it separates the
+     cards from the page without needing a border on every one. */
+  --background: oklch(0.981 0.005 258.3);
+  --card: oklch(1 0 0);
+  --popover: oklch(1 0 0);
+  --foreground: oklch(0.245 0.039 264.4);
+  --card-foreground: oklch(0.245 0.039 264.4);
+  --popover-foreground: oklch(0.245 0.039 264.4);
+  --secondary: oklch(0.968 0.007 247.9);
+  --secondary-foreground: oklch(0.245 0.039 264.4);
+  --muted: oklch(0.968 0.007 247.9);
+  --muted-foreground: oklch(0.446 0.037 257.3);
+  --border: oklch(0.906 0.015 251.2);
+  --input: oklch(0.906 0.015 251.2);
+
+  /* The sidebar is the one place the deep brand navy belongs: it is a
+     persistent surface, so a saturated plate there is identity rather than
+     noise, and white on navy is 13.88:1. */
+  --sidebar: oklch(0.295 0.080 248.4);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.708 0.149 234.4);
+  --sidebar-primary-foreground: oklch(0.245 0.039 264.4);
+  --sidebar-accent: oklch(0.365 0.085 246);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.365 0.085 246);
+  --sidebar-ring: oklch(0.708 0.149 234.4);
+
+  /* Charts run brand500 -> navy, so a multi-series chart reads as one family. */
+  --chart-1: oklch(0.708 0.149 234.4);
+  --chart-2: oklch(0.600 0.141 241.6);
+  --chart-3: oklch(0.492 0.121 244.0);
+  --chart-4: oklch(0.395 0.100 246.0);
+  --chart-5: oklch(0.295 0.080 248.4);
+}
+
+[data-theme="blue"] {
+  --primary: oklch(0.55 0.18 255);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.55 0.18 255);
+  --sidebar-primary: oklch(0.55 0.18 255);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+
+[data-theme="green"] {
+  --primary: oklch(0.52 0.15 150);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.52 0.15 150);
+  --sidebar-primary: oklch(0.52 0.15 150);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+
+[data-theme="rose"] {
+  --primary: oklch(0.58 0.19 15);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.58 0.19 15);
+  --sidebar-primary: oklch(0.58 0.19 15);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+
+[data-theme="orange"] {
+  --primary: oklch(0.6 0.17 45);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.6 0.17 45);
+  --sidebar-primary: oklch(0.6 0.17 45);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+
+[data-theme="violet"] {
+  --primary: oklch(0.55 0.2 300);
+  --primary-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.55 0.2 300);
+  --sidebar-primary: oklch(0.55 0.2 300);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+
+  /* Functional status palette — dark. Same five meanings as :root (see the
+     comment there); lifted in lightness and dropped in chroma so the fill
+     sits on a dark card without glowing. */
+  --status-pending: oklch(0.82 0.13 85);
+  --status-pending-bg: oklch(0.32 0.06 75);
+  --status-success: oklch(0.8 0.14 152);
+  --status-success-bg: oklch(0.3 0.06 152);
+  --status-danger: oklch(0.75 0.16 25);
+  --status-danger-bg: oklch(0.32 0.08 25);
+  --status-info: oklch(0.78 0.12 250);
+  --status-info-bg: oklch(0.32 0.06 255);
+  --status-neutral: oklch(0.75 0 0);
+  --status-neutral-bg: oklch(0.3 0 0);
+}
+
+/* On a dark ground the two-step rule inverts: brand500 is now the readable
+   one, and it takes dark text (6.43:1) rather than white (2.53:1). Same
+   colour, opposite job — which is why this is a separate block rather than an
+   opacity trick on the light one. */
+.dark[data-theme="lalaba"] {
+  --primary: oklch(0.708 0.149 234.4);
+  --primary-foreground: oklch(0.245 0.039 264.4);
+  --ring: oklch(0.708 0.149 234.4);
+  --accent: oklch(0.32 0.055 245);
+  --accent-foreground: oklch(0.936 0.038 224.3);
+
+  /* The sidebar keeps the brand in dark mode too, as a deep navy-tinted
+     plate rather than the neutral grey `.dark` would otherwise supply —
+     without this the panel is Lalaba in light mode and anonymous in dark.
+     Darker and less saturated than the light-mode navy, because the same
+     colour that reads as a confident plate against white reads as a glowing
+     rectangle against near-black. */
+  --sidebar: oklch(0.230 0.050 248.4);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.300 0.058 247);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.300 0.058 247);
+  --sidebar-primary: oklch(0.708 0.149 234.4);
+  --sidebar-primary-foreground: oklch(0.245 0.039 264.4);
+  --sidebar-ring: oklch(0.708 0.149 234.4);
+  --chart-1: oklch(0.708 0.149 234.4);
+  --chart-2: oklch(0.640 0.145 238.0);
+  --chart-3: oklch(0.570 0.135 241.0);
+  --chart-4: oklch(0.500 0.120 244.0);
+  --chart-5: oklch(0.430 0.105 246.0);
+}
+
+.dark[data-theme="blue"] {
+  --primary: oklch(0.75 0.15 255);
+  --primary-foreground: oklch(0.205 0 0);
+  --ring: oklch(0.75 0.15 255);
+  --sidebar-primary: oklch(0.75 0.15 255);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+}
+
+.dark[data-theme="green"] {
+  --primary: oklch(0.75 0.14 150);
+  --primary-foreground: oklch(0.205 0 0);
+  --ring: oklch(0.75 0.14 150);
+  --sidebar-primary: oklch(0.75 0.14 150);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+}
+
+.dark[data-theme="rose"] {
+  --primary: oklch(0.75 0.16 15);
+  --primary-foreground: oklch(0.205 0 0);
+  --ring: oklch(0.75 0.16 15);
+  --sidebar-primary: oklch(0.75 0.16 15);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+}
+
+.dark[data-theme="orange"] {
+  --primary: oklch(0.78 0.15 45);
+  --primary-foreground: oklch(0.205 0 0);
+  --ring: oklch(0.78 0.15 45);
+  --sidebar-primary: oklch(0.78 0.15 45);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+}
+
+.dark[data-theme="violet"] {
+  --primary: oklch(0.75 0.17 300);
+  --primary-foreground: oklch(0.205 0 0);
+  --ring: oklch(0.75 0.17 300);
+  --sidebar-primary: oklch(0.75 0.17 300);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
