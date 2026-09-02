@@ -4,6 +4,17 @@ The internal operations console for Lalaba — 29 feature routes mirroring the b
 
 Talks to the [Lalaba backend](https://github.com/pjDevph/lalaba-backend-showcase) via a hand-written GraphQL query/mutation layer under `src/lib/graphql/` — no Apollo or codegen, just typed fetch calls per module.
 
+<p align="center"><img src="docs/screenshots/app.jpg" width="70%" alt="Lalaba admin panel" /></p>
+
+## Watch it work
+
+<p align="center">
+  <a href="docs/screenshots/walkthrough.mp4">
+    <img src="docs/screenshots/walkthrough-poster.jpg" width="70%" alt="Click to watch the admin panel walkthrough" />
+  </a>
+  <br/><sub>A real screen recording — the 29 feature routes covering merchants, orders, wallets, promotions, and booking-policy, all backed by the live GraphQL layer (click to play).</sub>
+</p>
+
 ## Stack
 
 Next.js 16 · React 19 · TanStack Query + Table · shadcn/base-ui components
